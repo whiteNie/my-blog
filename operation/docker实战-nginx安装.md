@@ -120,7 +120,7 @@ docker run -d nginx:latest
 ##### 方式二
 
 ```shell
-docker run --name mynginx -d nginx:latest
+docker run --name=mynginx -d nginx:latest
 ```
 
 *-name* 的意思为 *nginx* 启动之后的容器取别名
@@ -128,6 +128,8 @@ docker run --name mynginx -d nginx:latest
 <img src="http://qiniuyun.whitenip.site/image/blog/operation/nginx-run2.png" alt="avatar" style="zoom:80%;" />
 
 ##### 方式三
+
+> 将 *nginx* 内部的配置文件挂载到宿主机器
 
 这里就是一些更详细的自定义容器的配置：
 
@@ -167,13 +169,26 @@ docker run --name mynginx -d nginx:latest
 * 重新创建 *nginx* 容器
 
 ```shell
-docker run  --name=mynginx -d \
--p 10001:80 \
--v /data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
--v /data/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf \
+docker run -d --name=mynginx -p 80:80 \
+-v /data/nginx/nginx.conf:/etc/nginx/nginx.conf \
+-v/data/nginx/log:/var/log/nginx \
 -v /data/nginx/html:/usr/share/nginx/html \
--v /data/nginx/log:/var/log/nginx \
---restart="always"
-nginx
+-v /data/nginx/conf:/etc/nginx/conf.d \
+--restart="always" \
+nginx:latest
 ```
+
+***建议：***以上指令放到编辑器格式化之后再执行，防止出现 [docker : invalid reference format](https://stackoverflow.com/questions/45682010/docker-invalid-reference-format) 这个错误。
+
+#### 成功画面
+
+![avatar](http://qiniuyun.whitenip.site/image/blog/nginx/nginx-sucess.png)
+
+*nginx 安装完结撒花，敬请期待 nginx 实战篇*。
+
+​																								
+
+​																																				—— *世上最重要的事，不在于我们在何处，而在于我们朝着什么方向走。*
+
+
 
