@@ -6,6 +6,8 @@
 
 ### 常见的 X LOCK
 
+x锁(排它锁)：
+
 * record lock 给指定行记录添加锁
 * gap lock 间隙锁
 * next key lock
