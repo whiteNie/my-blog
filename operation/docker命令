@@ -1,0 +1,17 @@
+docker run -d -p 9876:9876 -v D:/docker/mq/other/tmp/data/namesrv/logs:/root/logs -v D:/docker/mq/other/tmp/data/namesrv/store:/root/store --name rmqnamesrv -e "MAX_POSSIBLE_HEAP=100000000" rocketmqinc/rocketmq sh mqnamesrv
+
+
+docker run -d -p 10911:10911 -p 10909:10909 -v D:/docker/mq/other/tmp/data/broker/logs:/root/logs -v  D:/docker/mq/other/tmp/data/broker/store:/root/store -v D:/docker/mq/other/tmp/conf/broker.conf:/opt/rocketmq/conf/broker.conf --name rmqbroker --link rmqnamesrv:namesrv -e "NAMESRV_ADDR=namesrv:9876" -e "MAX_POSSIBLE_HEAP=200000000" rocketmqinc/rocketmq sh mqbroker -c /opt/rocketmq/conf/broker.conf
+
+
+
+docker run -e "JAVA_OPTS=-Drocketmq.config.namesrvAddr=172.17.0.3:9876 -Drocketmq.config.isVIPChannel=false" -p  9999:8080 -t --name rmConsole styletang/rocketmq-console-ng
+
+
+
+docker run -d --name redis-server -p 6379:6379 -v D:/docker/redis:/etc/redis -v D:/docker/redis/data/:/data redis:latest /etc/redis/redis.conf
+
+
+
+
+docker run --name myredis -v D:/docker/redis/data:/data -v D:/docker/redis/conf/redis.conf:/etc/redis/redis.conf -d -p 6379:6379 redis redis-server /etc/redis/redis.conf
